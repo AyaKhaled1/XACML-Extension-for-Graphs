@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="xacmlx:1.0:core:schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns="xacmlx:1.0:core:schema"
+		   attributeFormDefault="unqualified" elementFormDefault="qualified">
+<xs:import namespace="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" schemaLocation="./XACML-Elements.xsd"/>
+
+	<!-- For the XACML policy extension -->
+	<xs:element name="Meta" type="MetaType"/>
+	<xs:complexType name="MetaType">
+	    <xs:sequence>
+	        <xs:element ref="Vertices"/> <!-- exactly once -->
+	        <xs:element ref="Edges"/>    <!-- exactly once -->
+	   </xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="Vertices" type="VerticesMetaType"/>
+	<xs:complexType name="VerticesMetaType">
+	    <xs:sequence>
+	        <xs:element name="VertexEntity" type="xs:string"
+	        			minOccurs="1" maxOccurs="unbounded"/>
+	    </xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="Edges" type="EdgesMetaType"/>
+	<xs:complexType name="EdgesMetaType">
+	    <xs:sequence>
+	        <xs:element name="EdgeEntity" type="xs:string"
+	        			minOccurs="1" maxOccurs="unbounded"/>
+	    </xs:sequence>
+	</xs:complexType>
+
+	<!-- For the XACML rule extension -->
+	<xs:element name="Pattern" type="PatternType"/>
+	<xs:complexType name="PatternType">
+	    <xs:sequence>
+	        <xs:element ref="Path"/>
+	    </xs:sequence>
+	    <xs:attribute name="PatternId" type="xs:string" use="required"/>
+	</xs:complexType>
+	
+	<xs:element name="Path" type="PathType"/>
+	<xs:complexType name="PathType">
+	    <xs:sequence>
+	        <xs:element ref="Vertex"/> <!-- exactly once -->
+	        <xs:element ref="Edge"/>   <!-- exactly once -->
+	        <xs:choice> <!-- exactly one of them -->
+	            <xs:element ref="Vertex"/>
+	            <xs:element ref="Path"/>
+	        </xs:choice>
+	   </xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="Vertex" type="VertexType"/>
+	<xs:complexType name="VertexType">
+	    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+	        <xs:element ref="xacml:AnyOf"/>
+	    </xs:sequence>
+	    <xs:attribute name="VertexId" type="xs:string" use="optional"/>
+	    <xs:attribute name="Label" type="xs:string" use="optional"/>
+	    <xs:attribute name="Category" use="optional">
+	    	<xs:simpleType>
+			    <xs:restriction base="xs:string">
+			        <xs:enumeration value="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/> 
+			        <xs:enumeration value="xacmlx:1.0:path-category:vertex"/>
+			        <xs:enumeration value="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"/>
+			    </xs:restriction>
+			</xs:simpleType>
+	    </xs:attribute>
+	</xs:complexType>
+	<!--
+	- The anyOf is the same as in the XML schema of XACML.
+	-->
+	
+	<xs:element name="Edge" type="EdgeType"/>
+	<xs:complexType name="EdgeType">
+	    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+	        <xs:element ref="xacml:AnyOf"/>
+	    </xs:sequence>
+	    <xs:attribute name="Category" use="optional">
+	    	<xs:simpleType>
+			  	<xs:restriction base="xs:string">
+			    	<xs:enumeration value="xacmlx:1.0:path-category:edge"/> 
+			  	</xs:restriction>
+			</xs:simpleType>
+	    </xs:attribute>
+	    <xs:attribute name="EdgeId" type="xs:string" use="optional"/>
+	    <xs:attribute name="Type" type="xs:string" use="optional"/>
+	    <xs:attribute name="MinLength" type="xs:integer" use="optional"/>
+	    <xs:attribute name="MaxLength" type="xs:integer" use="optional"/>
+	    <xs:attribute name="Length" type="xs:integer" use="optional"/>
+	    <xs:attribute name="Direction" use="optional">
+	    	<xs:simpleType>
+			  	<xs:restriction base="xs:string">
+			    	<xs:enumeration value="from"/>
+			    	<xs:enumeration value="to"/>
+			    	<xs:enumeration value="any"/>
+			  	</xs:restriction>
+			</xs:simpleType>
+	    </xs:attribute>
+	</xs:complexType>
+	<!--
+	- Category is optional because, the default value is "xacmlx:1.0:path-category:edge"
+	- Direction is optional because, the default value is "any"
+	-->
+	
+	<xs:element name="PatternCondition" type="PatternConditionType"/>
+	<xs:complexType name="PatternConditionType">
+		<xs:sequence>
+	        <xs:element ref="xacml:Apply"/>
+	    </xs:sequence>
+	</xs:complexType>
+	
+	<!-- For the XACML request extension -->
+	<xs:element name="PathAttributes" type="PathAttributesType"/>
+	<xs:complexType name="PathAttributesType">
+	   <xs:sequence>
+	        <xs:element ref="xacml:Attributes" maxOccurs="unbounded"/>
+	   </xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="ActionAttributes" type="ActionAttributesType"/>
+	<xs:complexType name="ActionAttributesType">
+	   <xs:sequence>
+	        <xs:element ref="xacml:Attributes" maxOccurs="unbounded"/>
+	   </xs:sequence>
+	</xs:complexType>
+
+</xs:schema> 

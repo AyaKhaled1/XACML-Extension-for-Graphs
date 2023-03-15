@@ -60,7 +60,7 @@
 	    <xs:attribute name="Category" use="optional">
 	    	<xs:simpleType>
 			    <xs:restriction base="xs:string">
-			        <xs:enumeration value="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/> 
+			    	<xs:enumeration value="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/> 
 			        <xs:enumeration value="xacmlx:1.0:path-category:vertex"/>
 			        <xs:enumeration value="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"/>
 			    </xs:restriction>
@@ -79,7 +79,8 @@
 	    <xs:attribute name="Category" use="optional">
 	    	<xs:simpleType>
 			  	<xs:restriction base="xs:string">
-			    	<xs:enumeration value="xacmlx:1.0:path-category:edge"/> 
+			    	<xs:enumeration value="xacmlx:1.0:path-category:edge"/>
+					<xs:enumeration value="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"/>
 			  	</xs:restriction>
 			</xs:simpleType>
 	    </xs:attribute>
@@ -91,9 +92,9 @@
 	    <xs:attribute name="Direction" use="optional">
 	    	<xs:simpleType>
 			  	<xs:restriction base="xs:string">
-			    	<xs:enumeration value="from"/>
-			    	<xs:enumeration value="to"/>
-			    	<xs:enumeration value="any"/>
+			    		<xs:enumeration value="from"/>
+			    		<xs:enumeration value="to"/>
+			    		<xs:enumeration value="any"/>
 			  	</xs:restriction>
 			</xs:simpleType>
 	    </xs:attribute>

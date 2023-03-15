@@ -4,7 +4,7 @@
 		   xmlns:xacmlx="xacmlx:1.0:core:schema"
 		   attributeFormDefault="unqualified" elementFormDefault="qualified">
 <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
-<xs:import namespace="xacmlx:1.0:core:schema" schemaLocation="./XACML4G-Elements.xsd"/>
+<xs:import namespace="xacmlx:1.0:core:schema" schemaLocation="./Extended-XACML-Elements.xsd"/>
 
 	<!-- XACML Policy -->
 	<xs:element name="Obligations" type="ObligationsType"/>
@@ -246,10 +246,9 @@
 				<xs:attribute name="DataType" type="xs:anyURI" use="required"/>
 				<xs:attribute name="Issuer" type="xs:string" use="optional"/>
 				<xs:attribute name="MustBePresent" type="xs:boolean" use="required"/>
-				<!-- Added these 2 attributes for XACML4G -->
+				<!-- Added these 2 attributes for XACMLx -->
 				<xs:attribute name="VertexId" type="xs:string" use="optional"/>
 				<xs:attribute name="EdgeId" type="xs:string" use="optional"/>
-	<!-- 		<xs:assert test="(@VertexId and not(@EdgeId)) or (not(@VertexId) and @EdgeId)"/>  -->
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -338,6 +337,14 @@
 			<xs:element ref="Attribute" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="Category" type="xs:anyURI" use="required"/>
+		<xs:attribute name="Type" use="optional">
+	    		<xs:simpleType>
+			    <xs:restriction base="xs:anyURI">
+			        <xs:enumeration value="xacmlx:1.0:path-category:vertex"/>
+			        <xs:enumeration value="xacmlx:1.0:path-category:edge"/>
+			    </xs:restriction>
+			</xs:simpleType>
+	    	</xs:attribute>
 		<xs:attribute ref="xml:id" use="optional"/>
 	</xs:complexType>
 
@@ -390,24 +397,24 @@
 	<xs:element name="Policy">
 		<xs:complexType>
 		   <xs:sequence>
-		          <xs:element ref="Description" minOccurs="0"/>
-		          <xs:element ref="PolicyIssuer" minOccurs="0"/>
-		          <xs:element ref="PolicyDefaults" minOccurs="0"/>
-		          <xs:element ref="xacmlx:Meta" minOccurs="0"/>
-		          <xs:element ref="Target"/>
-		          <xs:choice maxOccurs="unbounded">
-		                <xs:element ref="CombinerParameters" minOccurs="0"/>
-		                <xs:element ref="RuleCombinerParameters" minOccurs="0"/>
-		                <xs:element ref="VariableDefinition"/>
-		                <xs:element ref="Rule"/>
-		          </xs:choice>
-		          <xs:element ref="ObligationExpressions" minOccurs="0"/>
-		          <xs:element ref="AdviceExpressions" minOccurs="0"/>
-		   </xs:sequence>
-		   <xs:attribute name="PolicyId" type="xs:anyURI" use="required"/>
-		   <xs:attribute name="Version" type="VersionType" use="required"/>
-		   <xs:attribute name="RuleCombiningAlgId" type="xs:anyURI" use="required"/>
-		   <xs:attribute name="MaxDelegationDepth" type="xs:integer" use="optional"/>
+		        <xs:element ref="Description" minOccurs="0"/>
+		        <xs:element ref="PolicyIssuer" minOccurs="0"/>
+		        <xs:element ref="PolicyDefaults" minOccurs="0"/>
+		        <xs:element ref="xacmlx:Meta" minOccurs="0"/>
+		        <xs:element ref="Target"/>
+		        <xs:choice maxOccurs="unbounded">
+		            <xs:element ref="CombinerParameters" minOccurs="0"/>
+		            <xs:element ref="RuleCombinerParameters" minOccurs="0"/>
+		            <xs:element ref="VariableDefinition"/>
+		            <xs:element ref="Rule"/>
+		        </xs:choice>
+		        <xs:element ref="ObligationExpressions" minOccurs="0"/>
+		        <xs:element ref="AdviceExpressions" minOccurs="0"/>
+		   	</xs:sequence>
+		   	<xs:attribute name="PolicyId" type="xs:anyURI" use="required"/>
+		   	<xs:attribute name="Version" type="VersionType" use="required"/>
+		   	<xs:attribute name="RuleCombiningAlgId" type="xs:anyURI" use="required"/>
+		   	<xs:attribute name="MaxDelegationDepth" type="xs:integer" use="optional"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -432,10 +439,10 @@
 	<xs:element name="Request">
 		<xs:complexType>
 			<xs:sequence>
-					<xs:element ref="RequestDefaults" minOccurs="0"/>
-					<xs:element ref="xacmlx:ActionAttributes"/>
-					<xs:element ref="xacmlx:PathAttributes"/>
-					<xs:element ref="MultiRequests" minOccurs="0"/>
+				<xs:element ref="RequestDefaults" minOccurs="0"/>
+				<xs:element ref="xacmlx:ActionAttributes"/>
+				<xs:element ref="xacmlx:PathAttributes"/>
+				<xs:element ref="MultiRequests" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="ReturnPolicyIdList" type="xs:boolean" use="required"/>
 			<xs:attribute name="CombinedDecision" type="xs:boolean" use="required" />
